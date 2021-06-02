@@ -1,0 +1,43 @@
+version: '3'
+services:
+  auth-service-api:
+    build: ./
+    env_file: ./.env
+    ports:
+      - 5000:5000
+    networks:
+      - auth-service
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:4.4.6
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - 27017:27017
+    volumes:
+      - users:/data/db
+    networks:
+      - auth-service
+
+  mongo-express:
+    image: mongo-express:0.54.0
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+    networks:
+      - auth-service
+    depends_on:
+      - mongo
+
+networks:
+  auth-service:
+    driver: bridge
+
+volumes:
+  users:
+    driver: local
