@@ -91,9 +91,9 @@
     "@types/node" "*"
 
 "@types/express-serve-static-core@^4.17.18":
-  version "4.17.20"
-  resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.20.tgz#44caee029f2c26c46711da5e845cdc12167ad72d"
-  integrity sha512-8qqFN4W53IEWa9bdmuVrUcVkFemQWnt5DKPQ/oa8xKDYgtjCr2OO6NX5TIK49NLFr3mPYU2cLh92DQquC3oWWQ==
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.21.tgz#a427278e106bca77b83ad85221eae709a3414d42"
+  integrity sha512-gwCiEZqW6f7EoR8TTEfalyEhb1zA5jQJnRngr97+3pzMaO1RKoI1w2bw07TK72renMUVWcWS5mLI6rk1NqN0nA==
   dependencies:
     "@types/node" "*"
     "@types/qs" "*"
@@ -132,10 +132,22 @@
     "@types/bson" "*"
     "@types/node" "*"
 
+"@types/mongoose@^5.11.71":
+  version "5.11.71"
+  resolved "https://registry.yarnpkg.com/@types/mongoose/-/mongoose-5.11.71.tgz#3d169bf6fa19c3d9e6a5b2e65e1ddd62c0e5ece3"
+  integrity sha512-CMn6IUBfLv87ViLhe314b+EcbiN0FTRrVO31RFoujCh1GkjFuKcinYpiKYRv2zTy6aFKQZWiwqUrS+jtdCn9Eg==
+  dependencies:
+    mongoose "*"
+
 "@types/node@*":
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-15.6.2.tgz#c61d49f38af70da32424b5322eee21f97e627175"
   integrity sha512-dxcOx8801kMo3KlU+C+/ctWrzREAH7YvoF3aoVpRdqgs+Kf7flp+PJDN/EX5bME3suDUZHsxes9hpvBmzYlWbA==
+
+"@types/node@^15.9.0":
+  version "15.9.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.9.0.tgz#0b7f6c33ca5618fe329a9d832b478b4964d325a8"
+  integrity sha512-AR1Vq1Ei1GaA5FjKL5PBqblTZsL5M+monvGSZwe6sSIdGiuu7Xr/pNwWJY+0ZQuN8AapD/XMB5IzBAyYRFbocA==
 
 "@types/qs@*":
   version "6.9.6"
@@ -1672,7 +1684,7 @@ mongoose-legacy-pluralize@1.0.2:
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
   integrity sha512-Yo/7qQU4/EyIS8YDFSeenIvXxZN+ld7YdV9LqFVQJzTLye8unujAWPZ4NWKfFA+RNjh+wvTWKY9Z3E5XM6ZZiQ==
 
-mongoose@^5.12.12:
+mongoose@*, mongoose@^5.12.12:
   version "5.12.12"
   resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.12.12.tgz#7da29c7d7924ad1fb07b5c5fc0acde2f4aaff4f9"
   integrity sha512-n+ZmGApaL5x/r92w6S4pb+c075i+YKzg1F9YWkznSzQMtvetj/2dSjj2cqsITpd6z60k3K7ZaosIl6hzHwUA9g==
