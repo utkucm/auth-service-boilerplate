@@ -1,7 +1,6 @@
-import winston from 'winston';
-// import configLoader from './envLoader.helper';
+import winston, { Logger } from 'winston';
 
-const logger = winston.createLogger({
+const logger: Logger = winston.createLogger({
   levels: winston.config.npm.levels,
   format: winston.format.json(),
   transports: [

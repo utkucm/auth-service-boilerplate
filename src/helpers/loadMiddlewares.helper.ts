@@ -5,7 +5,7 @@ interface ILoadMiddlewares {
   expressApp: Express;
 }
 
-const loadMiddlewares = ({ expressApp }: ILoadMiddlewares) => {
+const loadMiddlewares = ({ expressApp }: ILoadMiddlewares): void => {
   try {
     logger.info('Loading middlewares');
     expressApp.use(express.json());

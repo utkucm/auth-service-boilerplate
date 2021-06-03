@@ -14,7 +14,18 @@ if (env.error) {
 // Setting ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-const configLoader = {
+interface IEnvConfig {
+  PORT: number;
+  ENV: string;
+  MONGO_URI: string;
+  jwtAccessSecret: string;
+  jwtRefreshSecret: string;
+  jwtAccessExpiry: string;
+  jwtRefreshExpiry: string;
+  apiVersion: string;
+}
+
+const configLoader: IEnvConfig = {
   // Server Related
   PORT: Number(process.env.PORT) || 5000,
   ENV: String(process.env.NODE_ENV),
