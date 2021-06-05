@@ -1,14 +1,15 @@
-version: '3'
+version: '3.8'
 services:
-  # auth-service-api:
-  #   build: ./
-  #   env_file: ./.env
-  #   ports:
-  #     - 5000:5000
-  #   networks:
-  #     - auth-service
-  #   depends_on:
-  #     - mongo
+  auth-service-api:
+    build:
+      context: ./
+    env_file: ./.env
+    ports:
+      - 5000:5000
+    networks:
+      - auth-service
+    depends_on:
+      - mongo
 
   mongo:
     image: mongo:4.4.6
