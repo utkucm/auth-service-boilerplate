@@ -1,5 +1,6 @@
-import BaseError, { HttpStatusCode } from './BaseError';
+import BaseError from './BaseError';
 import errors from '../constants/error.constants';
+import { HttpStatusCode } from '../../types';
 
 class Unauthorized extends BaseError {
   constructor(message: string = errors.unauthorized.message) {
