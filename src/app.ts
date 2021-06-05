@@ -7,8 +7,8 @@ process.on('uncaughtException', () => {
   throw CreateError.InternalServerError();
 });
 
-process.on('unhandledRejection', () => {
-  throw CreateError.InternalServerError();
-});
+// process.on('unhandledRejection', () => {
+//   throw CreateError.InternalServerError();
+// });
 
 export default expressApp;

@@ -1,6 +1,8 @@
 import { Router } from 'express';
-import { configLoader } from 'src/utils';
+import { AuthMiddlewares } from '../middlewares';
 
 const authRouter: Router = Router();
 
-authRouter.route(`/api/${configLoader.apiVersion}/auth`).post;
+authRouter.route('/register').post(AuthMiddlewares.validateRegister);
+
+export default authRouter;
