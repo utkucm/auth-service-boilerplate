@@ -80,7 +80,7 @@ const userSchema = new mongoose.Schema<IUser>(
   {
     timestamps: true,
     toJSON: {
-      transform(doc: any, ret: any) {
+      transform(_: any, ret: any) {
         ret.id = ret._id;
         delete ret._id;
         delete ret._v;
