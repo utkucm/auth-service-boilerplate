@@ -16,8 +16,8 @@ class CreateError {
     return new NotFound(message);
   };
 
-  public static InternalServerError = (): InternalServer => {
-    return new InternalServer();
+  public static InternalServerError = (message?: string): InternalServer => {
+    return new InternalServer(message);
   };
 }
 

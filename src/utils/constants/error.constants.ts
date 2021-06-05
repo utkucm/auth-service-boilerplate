@@ -1,14 +1,4 @@
-interface IError {
-  name: string;
-  message: string;
-}
-
-interface IErrors {
-  validation: IError;
-  unauthorized: IError;
-  notFound: IError;
-  internalServer: IError;
-}
+import { IErrors } from '../../types';
 
 const errors: IErrors = {
   validation: {

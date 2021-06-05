@@ -1,37 +1,19 @@
 import mongoose, { Schema } from 'mongoose';
 import argon from 'argon2';
 
-enum UserRole {
-  ADMIN = 'admin',
-  USER = 'user',
-}
-
-interface IUser {
-  username: string;
-  email: string;
-  password: string;
-  emailConfirmed: boolean;
-  role: UserRole;
-  isDeleted: boolean;
-  resetPasswordToken: string | null;
-  resetPasswordTokenExpires: number | null;
-}
-
-interface UserModel extends mongoose.Model<UserDoc> {}
-
-interface UserDoc extends mongoose.Document {
-  username: string;
-  email: string;
-  password: string;
-  emailConfirmed: boolean;
-  role: UserRole;
-  isDeleted: boolean;
-  resetPasswordToken: string | null;
-  resetPasswordTokenExpires: number | null;
-}
+import { IUser, UserDoc, UserRole, UserModel } from '../../types';
 
 const userSchema = new mongoose.Schema<IUser>(
   {
+    username: {
+      type: String,
+      required: [true, 'Please provide a valid username.'],
+      lowercase: true,
+      trim: true,
+      unique: true,
+      minLength: [6, 'Username must be at least 6 character.'],
+      maxLength: [20, 'Username must be at most 20 character.'],
+    },
     email: {
       type: String,
       required: [true, 'Please provide a valid email address.'],

@@ -1,16 +1,10 @@
 import mongoose from 'mongoose';
+import { IMongoConnectOptions } from '../types';
 
 import configLoader from './envLoader.utils';
 import BaseError from './errors/BaseError';
 import CreateError from './errors/CreateError';
 import logger from './logger.utils';
-
-interface IMongoConnectOptions {
-  useNewUrlParser: true;
-  useUnifiedTopology: true;
-  useCreateIndex: true;
-  useFindAndModify: true;
-}
 
 const MongoConnectOptions: IMongoConnectOptions = {
   useNewUrlParser: true,

@@ -25,11 +25,11 @@ const userValidation = {
       password: Joi.string().min(8).max(255),
     }),
   },
-  delete: {
-    params: Joi.object({
+  delete: Joi.object({
+    params: {
       id: Joi.string().required(),
-    }),
-  },
+    },
+  }),
 };
 
 export default userValidation;

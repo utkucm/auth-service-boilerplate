@@ -1,17 +1,14 @@
-import express, { Express } from 'express';
+import { json } from 'express';
 
-import { errorHandler } from '../middlewares';
 import CreateError from './errors/CreateError';
 import logger from './logger.utils';
-
-interface ILoadMiddlewares {
-  expressApp: Express;
-}
+import { errorHandler } from '../middlewares';
+import { ILoadMiddlewares } from '../types';
 
 const loadMiddlewares = ({ expressApp }: ILoadMiddlewares): void => {
   try {
     logger.info('Loading middlewares');
-    expressApp.use(express.json());
+    expressApp.use(json());
     expressApp.use(errorHandler);
   } catch (err) {
     logger.error('An unexpecting error occurred while loading middlewares');

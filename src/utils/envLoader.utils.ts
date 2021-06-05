@@ -1,5 +1,7 @@
 import { config } from 'dotenv';
 import { join } from 'path';
+
+import { IEnvConfig } from '../types';
 import CreateError from './errors/CreateError';
 import logger from './logger.utils';
 
@@ -14,17 +16,6 @@ if (env.error) {
 
 // Setting ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
-interface IEnvConfig {
-  PORT: number;
-  ENV: string;
-  MONGO_URI: string;
-  jwtAccessSecret: string;
-  jwtRefreshSecret: string;
-  jwtAccessExpiry: string;
-  jwtRefreshExpiry: string;
-  apiVersion: string;
-}
 
 const configLoader: IEnvConfig = {
   // Server Related
