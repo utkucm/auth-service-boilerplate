@@ -1,12 +1,12 @@
 import expressApp from './app';
-import { connectDB, loadMiddlewares, startServer } from './helpers';
+import { connectDB, loadMiddlewares, startServer } from './utils';
 
 const main = async () => {
   await connectDB();
 
-  startServer({ expressApp });
-
   loadMiddlewares({ expressApp });
+
+  startServer({ expressApp });
 };
 
 main();

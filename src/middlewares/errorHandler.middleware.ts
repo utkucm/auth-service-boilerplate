@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
+import BaseError from '../utils/errors/BaseError';
 
-const errorHandler = (err: any, _: Request, res: Response, __: NextFunction) => {
-  if (err.isOperational) {
+const errorHandler = (err: Error, _: Request, res: Response, __: NextFunction) => {
+  if (err instanceof BaseError) {
     return res.status(err.statusCode).json({
       success: false,
       payload: {

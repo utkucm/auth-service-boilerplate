@@ -1,6 +1,7 @@
 import { config } from 'dotenv';
 import { join } from 'path';
-import logger from './logger.helper';
+import CreateError from './errors/CreateError';
+import logger from './logger.utils';
 
 logger.info('Loading env variables');
 const env = config({ path: join(__dirname, '/../../.env') });
@@ -8,7 +9,7 @@ const env = config({ path: join(__dirname, '/../../.env') });
 // Checking if .env file exist
 if (env.error) {
   logger.error('Error occurred while loading env variables');
-  throw new Error('Environment variables can no be found!');
+  throw CreateError.InternalServerError();
 }
 
 // Setting ENV to 'development' by default

@@ -16,6 +16,7 @@
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
     "build": "tsc",
+    "test:watch": "jest --watch --no-cache",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
@@ -39,6 +40,7 @@
     "@types/node": "^15.9.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-validator": "^6.11.1",
     "mongoose": "^5.12.12",
     "winston": "^3.3.3"
   }

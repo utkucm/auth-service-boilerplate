@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 
-import configLoader from './envLoader.helper';
-import logger from './logger.helper';
+import configLoader from './envLoader.utils';
+import BaseError from './errors/BaseError';
+import CreateError from './errors/CreateError';
+import logger from './logger.utils';
 
 interface IMongoConnectOptions {
   useNewUrlParser: true;
@@ -17,7 +19,7 @@ const MongoConnectOptions: IMongoConnectOptions = {
   useCreateIndex: true,
 };
 
-const connectDB = async (): Promise<typeof mongoose> => {
+const connectDB = async (): Promise<typeof mongoose | BaseError> => {
   try {
     logger.info('Connecting to Database');
     const connection = await mongoose.connect(configLoader.MONGO_URI, MongoConnectOptions);
@@ -25,7 +27,8 @@ const connectDB = async (): Promise<typeof mongoose> => {
     return connection;
   } catch (err) {
     logger.error(`There is an unexpected error occurred when connecting to the database`);
-    throw err;
+    // console.log(err);
+    throw CreateError.InternalServerError();
   }
 };
 
