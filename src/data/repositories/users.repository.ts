@@ -19,7 +19,7 @@ class UserRepository {
       throw CreateError.InternalServerError('Something went wrong when creating a new user.');
     }
   }
-  public static async get(id: string): Promise<UserDoc> {
+  public static async get({ id }: { id: string }): Promise<UserDoc> {
     try {
       const foundUser = await User.findById(id);
 
@@ -75,7 +75,7 @@ class UserRepository {
     }
   }
 
-  public static async delete(id: string) {
+  public static async delete({ id }: { id: string }) {
     try {
       const foundUser = await User.findById(id);
 
