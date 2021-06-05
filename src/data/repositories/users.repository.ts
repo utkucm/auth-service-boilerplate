@@ -1,7 +1,7 @@
 import CreateError from '../../utils/errors/CreateError';
 import { User } from '../models';
 import { IGetAll, IUserCreate, IUserPartialUpdate, UserDoc } from '../../types';
-import { logger } from 'src/utils';
+import { logger } from '../../utils';
 
 class UserRepository {
   public static async getAll(filters?: IGetAll): Promise<UserDoc[]> {
@@ -39,13 +39,14 @@ class UserRepository {
     try {
       const isUserExist = await User.findOne({ email });
 
-      if (!isUserExist) {
+      if (isUserExist) {
         logger.error('A user with this email already exists.');
         throw CreateError.BadRequestError('A user with this email already exists.');
       }
 
       return await User.create({ username, email, password });
     } catch (err) {
+      console.log(err);
       logger.error('Error occured when creating a new user.');
       throw CreateError.InternalServerError('Something went wrong when creating a new user.');
     }
