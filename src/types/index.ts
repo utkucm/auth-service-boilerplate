@@ -28,6 +28,7 @@ export interface UserDoc extends Document {
   isDeleted: boolean;
   resetPasswordToken: string | null;
   resetPasswordTokenExpires: number | null;
+  verifyPassword: (hashedPassword: string, plainPassword: string) => boolean;
 }
 
 // Repository
@@ -44,17 +45,15 @@ export interface IUserPartialUpdate {
   password?: string;
 }
 
-export interface IGetAll {
-  filters?: {
-    username?: string;
-    email?: string;
-    emailConfirmed?: boolean;
-    role?: UserRole;
-    isDeleted?: boolean;
-    resetPasswordToken?: string;
-    resetPasswordTokenExpires?: {
-      $gt: number;
-    };
+export interface IGetFilters {
+  username?: string;
+  email?: string;
+  emailConfirmed?: boolean;
+  role?: UserRole;
+  isDeleted?: boolean;
+  resetPasswordToken?: string;
+  resetPasswordTokenExpires?: {
+    $gt: number;
   };
 }
 

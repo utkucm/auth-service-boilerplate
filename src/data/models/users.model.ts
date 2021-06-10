@@ -2,6 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import argon from 'argon2';
 
 import { IUser, UserDoc, UserRole, UserModel } from '../../types';
+import { CreateError, logger } from '../../utils';
 
 const userSchema = new mongoose.Schema<IUser>(
   {
@@ -32,7 +33,6 @@ const userSchema = new mongoose.Schema<IUser>(
     password: {
       type: String,
       required: [true, 'Please provide a valid password.'],
-      select: false,
     },
     emailConfirmed: {
       type: Boolean,
@@ -78,6 +78,15 @@ userSchema.pre('save', async function (done) {
   }
   done();
 });
+
+userSchema.methods.verifyPassword = async function (hashedPassword: string, plainPassword: string) {
+  try {
+    return await argon.verify(hashedPassword, plainPassword);
+  } catch (err) {
+    logger.error(`Error occured when validating password. ERROR: ${err}`);
+    throw CreateError.InternalServerError('Something went wrong when validating the request.');
+  }
+};
 
 const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
 

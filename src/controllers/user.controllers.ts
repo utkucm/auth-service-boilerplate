@@ -15,7 +15,26 @@ class UserController {
         payload: newUser,
       });
     } catch (err) {
-      return next(CreateError.InternalServerError('Error occurred when creating new user.'));
+      return next(err);
+    }
+  }
+
+  public static async login(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email, password } = req.body;
+
+      const user = await UserService.get({ email });
+
+      if (!user.verifyPassword(user.password, password)) {
+        return next(CreateError.UnauthorizedError('Email or password is incorrect.'));
+      }
+
+      return res.status(201).json({
+        success: true,
+        payload: user,
+      });
+    } catch (err) {
+      return next(err);
     }
   }
 }

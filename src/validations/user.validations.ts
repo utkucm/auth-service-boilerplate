@@ -9,6 +9,12 @@ const userValidation = {
       passwordConfirm: Joi.string().valid(Joi.ref('password')).required(),
     }),
   },
+  login: {
+    body: Joi.object({
+      email: Joi.string().max(255).email({ allowUnicode: true }).trim().lowercase().required(),
+      password: Joi.string().min(8).max(255).required(),
+    }),
+  },
   update: {
     params: Joi.object({
       id: Joi.string().required(),

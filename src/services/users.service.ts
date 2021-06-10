@@ -1,13 +1,13 @@
 import { UserRepository } from '../data/repositories';
-import { IGetAll, IUserCreate, IUserPartialUpdate } from '../types';
+import { IGetFilters, IUserCreate, IUserPartialUpdate } from '../types';
 
 class UserService {
-  public static getAll(filters?: IGetAll) {
+  public static getAll(filters?: IGetFilters) {
     return UserRepository.getAll({ ...filters });
   }
 
-  public static get(arg: { id: string }) {
-    return UserRepository.get({ ...arg });
+  public static get(filters: IGetFilters) {
+    return UserRepository.get(filters);
   }
 
   public static create(args: IUserCreate) {

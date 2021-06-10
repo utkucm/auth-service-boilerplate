@@ -20,8 +20,25 @@ class AuthMiddlewares {
       res.locals.data = value;
       return next();
     } catch (err) {
-      logger.error('Error occurred when validating register body.');
-      next(CreateError.InternalServerError('Something went wrong when validating request.'));
+      logger.error(`Error occurred when validating register body. ERROR: ${err}`);
+      next(err);
+    }
+  }
+
+  public static validateLogin(req: Request, res: Response, next: NextFunction) {
+    try {
+      logger.info('Validating login body.');
+      const { error, value } = userValidation.login.body.validate(req.body, options);
+
+      if (error) {
+        return next(CreateError.ValidationError(error));
+      }
+
+      res.locals.data = value;
+      return next();
+    } catch (err) {
+      logger.error(`Error occurred when validating login body. ERROR: ${err}`);
+      next(err);
     }
   }
 }
