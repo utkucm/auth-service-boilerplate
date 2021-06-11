@@ -31,6 +31,17 @@ class ResponseService {
         },
       });
   }
+
+  public static sendForgotPassword(res: Response, resetPasswordURL?: string) {
+    return res.status(200).json({
+      success: true,
+      payload: {
+        message:
+          'If we could find a user associated with provided email address. We will send an email to this email address to reset password.',
+        resetPasswordURL: resetPasswordURL || null,
+      },
+    });
+  }
 }
 
 export default ResponseService;

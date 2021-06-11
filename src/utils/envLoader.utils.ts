@@ -30,6 +30,8 @@ const configLoader: IEnvConfig = {
   jwtRefreshExpiry: String(process.env.JWT_REFRESH_EXPIRY),
   // API Related
   apiVersion: String(process.env.API_VERSION),
+  // Mail Stuff
+  sgKey: String(process.env.SEND_GRID_API_KEY),
 };
 
 export default configLoader;

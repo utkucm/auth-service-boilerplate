@@ -39,6 +39,22 @@ class AuthMiddlewares {
       next(err);
     }
   }
+
+  public static validateForgotPassword(req: Request, _: Response, next: NextFunction) {
+    try {
+      logger.info('Validating forgot password body.');
+      const { error } = userValidation.forgotPassword.body.validate(req.body, options);
+
+      if (error) {
+        return next(CreateError.ValidationError(error));
+      }
+
+      next();
+    } catch (err) {
+      logger.error(`Error occurred when validating login body. ERROR: ${err}`);
+      next(err);
+    }
+  }
 }
 
 export default AuthMiddlewares;

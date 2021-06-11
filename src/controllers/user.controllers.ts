@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { TokenService, UserService, ResponseService } from '../services';
+import { TokenService, UserService, ResponseService, PasswordService } from '../services';
 import { CreateError } from '../utils';
 
 class UserController {
@@ -27,6 +27,26 @@ class UserController {
       }
 
       ResponseService.sendLogin(res, TokenService.signTokens(user));
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  public static async forgotPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email } = req.body;
+
+      const user = await UserService.get({ email });
+
+      if (!user) {
+        return ResponseService.sendForgotPassword(res);
+      }
+
+      const resetPasswordURL = await PasswordService.generatePasswordReset(req, user);
+
+      // await MailService.sendForgotPassword(resetPasswordURL, user);
+
+      ResponseService.sendForgotPassword(res, resetPasswordURL);
     } catch (err) {
       return next(err);
     }

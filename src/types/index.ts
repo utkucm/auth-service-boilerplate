@@ -97,9 +97,24 @@ export interface IEnvConfig {
   jwtAccessExpiry: string;
   jwtRefreshExpiry: string;
   apiVersion: string;
+  sgKey: string;
 }
 
 // ExpressJS
 export interface ILoadMiddlewares {
   expressApp: Express;
+}
+
+// MAIL
+export interface IMailOptions {
+  service: string;
+  port: number;
+  secure?: boolean;
+  auth: {
+    user: string;
+    pass: string;
+  };
+  tls?: {
+    rejectUnauthorized: boolean;
+  };
 }

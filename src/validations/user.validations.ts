@@ -15,6 +15,11 @@ const userValidation = {
       password: Joi.string().min(8).max(255).required(),
     }),
   },
+  forgotPassword: {
+    body: Joi.object({
+      email: Joi.string().max(255).email({ allowUnicode: true }).trim().lowercase().required(),
+    }),
+  },
   update: {
     params: Joi.object({
       id: Joi.string().required(),
