@@ -1,4 +1,5 @@
 import { json } from 'express';
+import cookieParser from 'cookie-parser';
 
 import CreateError from './errors/CreateError';
 import configLoader from './envLoader.utils';
@@ -11,6 +12,8 @@ const loadMiddlewares = ({ expressApp }: ILoadMiddlewares): void => {
   try {
     logger.info('Loading middlewares');
     expressApp.use(json());
+    expressApp.use(cookieParser());
+
     expressApp.use(`/api/${configLoader.apiVersion}/auth`, authRouter);
     expressApp.use(errorHandler);
   } catch (err) {

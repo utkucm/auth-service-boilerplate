@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { UserService } from '../services';
+import { TokenService, UserService, ResponseService } from '../services';
 import { CreateError } from '../utils';
 
 class UserController {
@@ -8,12 +8,9 @@ class UserController {
     try {
       const { username, email, password } = res.locals.data;
 
-      const newUser = await UserService.create({ username, email, password });
+      const user = await UserService.create({ username, email, password });
 
-      return res.status(201).json({
-        success: true,
-        payload: newUser,
-      });
+      ResponseService.sendRegister(res, TokenService.signTokens(user));
     } catch (err) {
       return next(err);
     }
@@ -29,10 +26,7 @@ class UserController {
         return next(CreateError.UnauthorizedError('Email or password is incorrect.'));
       }
 
-      return res.status(201).json({
-        success: true,
-        payload: user,
-      });
+      ResponseService.sendLogin(res, TokenService.signTokens(user));
     } catch (err) {
       return next(err);
     }
