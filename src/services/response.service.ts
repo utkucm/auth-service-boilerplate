@@ -42,6 +42,15 @@ class ResponseService {
       },
     });
   }
+
+  public static sendResetPassword(res: Response) {
+    return res.status(200).json({
+      success: true,
+      payload: {
+        message: 'You have successfully changed your password.',
+      },
+    });
+  }
 }
 
 export default ResponseService;

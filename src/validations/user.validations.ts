@@ -20,6 +20,14 @@ const userValidation = {
       email: Joi.string().max(255).email({ allowUnicode: true }).trim().lowercase().required(),
     }),
   },
+  resetPassword: {
+    params: Joi.object({
+      resetPasswordToken: Joi.string().length(32).required(),
+    }),
+    body: Joi.object({
+      password: Joi.string().min(8).max(255).required(),
+    }),
+  },
   update: {
     params: Joi.object({
       id: Joi.string().required(),

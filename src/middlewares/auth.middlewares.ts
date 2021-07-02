@@ -51,7 +51,23 @@ class AuthMiddlewares {
 
       next();
     } catch (err) {
-      logger.error(`Error occurred when validating login body. ERROR: ${err}`);
+      logger.error(`Error occurred when validating forgot password body. ERROR: ${err}`);
+      next(err);
+    }
+  }
+
+  public static validateResetPassword(req: Request, _: Response, next: NextFunction) {
+    try {
+      logger.info('Validating reset password body.');
+      const { error } = userValidation.resetPassword.body.validate(req.body, options);
+
+      if (error) {
+        return next(CreateError.ValidationError(error));
+      }
+
+      next();
+    } catch (err) {
+      logger.error(`Error occurred when validating reset password body. ERROR: ${err}`);
       next(err);
     }
   }

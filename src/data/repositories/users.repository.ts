@@ -19,6 +19,7 @@ class UserRepository {
     const foundUser = await User.findOne({ ...filters }).exec();
 
     if (!foundUser) {
+      console.log(foundUser);
       logger.error('User not found.');
       throw CreateError.NotFoundError('User not found.');
     }
