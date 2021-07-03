@@ -10,6 +10,7 @@ export interface IUser {
   username: string;
   email: string;
   password: string;
+  passwordChangedAt: number | null;
   emailConfirmed: boolean;
   role: UserRole;
   isDeleted: boolean;
@@ -23,6 +24,7 @@ export interface UserDoc extends Document {
   username: string;
   email: string;
   password: string;
+  passwordChangedAt: number | null;
   emailConfirmed: boolean;
   role: UserRole;
   isDeleted: boolean;
@@ -46,6 +48,7 @@ export interface IUserPartialUpdate {
 }
 
 export interface IGetFilters {
+  _id?: string;
   username?: string;
   email?: string;
   emailConfirmed?: boolean;
@@ -54,6 +57,9 @@ export interface IGetFilters {
   resetPasswordToken?: string;
   resetPasswordTokenExpires?: {
     $gt: number;
+  };
+  passwordChangedAt?: {
+    $lt: number;
   };
 }
 

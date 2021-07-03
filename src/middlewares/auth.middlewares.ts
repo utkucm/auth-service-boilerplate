@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { CreateError, logger } from '../utils';
 
+import { CreateError, logger } from '../utils';
+import { TokenService, UserService } from '../services';
 import { userValidation } from '../validations';
 
 const options = {
@@ -64,6 +65,31 @@ class AuthMiddlewares {
       if (error) {
         return next(CreateError.ValidationError(error));
       }
+
+      next();
+    } catch (err) {
+      logger.error(`Error occurred when validating reset password body. ERROR: ${err}`);
+      next(err);
+    }
+  }
+
+  public static async isAuthenticated(req: Request, res: Response, next: NextFunction) {
+    try {
+      const tokens = TokenService.getTokens(req);
+
+      const { decodedAccessToken } = TokenService.verifyAccessToken(tokens.accessToken);
+
+      if (decodedAccessToken === 'TokenExpiredError') {
+        return next();
+      }
+
+      const user = await UserService.get({ _id: decodedAccessToken.id });
+
+      if (!user) {
+        return next(CreateError.UnauthorizedError('You need to log in.'));
+      }
+
+      res.locals.user = user;
 
       next();
     } catch (err) {

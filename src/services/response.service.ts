@@ -10,7 +10,7 @@ class ResponseService {
     return res
       .status(201)
       .cookie('jid', tokens.refreshToken)
-      .set('Authorization', tokens.accessToken)
+      .set('Authorization', `Bearer ${tokens.accessToken}`)
       .json({
         success: true,
         payload: {
@@ -23,7 +23,7 @@ class ResponseService {
     return res
       .status(200)
       .cookie('jid', tokens.refreshToken)
-      .set('Authorization', tokens.accessToken)
+      .set('Authorization', `Bearer ${tokens.accessToken}`)
       .json({
         success: true,
         payload: {
@@ -50,6 +50,17 @@ class ResponseService {
         message: 'You have successfully changed your password.',
       },
     });
+  }
+
+  public static sendRefreshToken(res: Response, tokens: Tokens) {
+    return res
+      .status(200)
+      .cookie('jid', tokens.refreshToken)
+      .set('Authorization', `Bearer ${tokens.accessToken}`)
+      .json({
+        success: true,
+        payload: {},
+      });
   }
 }
 

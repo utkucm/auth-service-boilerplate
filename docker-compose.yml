@@ -8,6 +8,8 @@ services:
       - 5000:5000
     networks:
       - auth-service
+    volumes:
+      - ./src:/usr/src/app/src
     depends_on:
       - mongo
 

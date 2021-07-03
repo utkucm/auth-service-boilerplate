@@ -1,13 +1,9 @@
 import { Request } from 'express';
 import jwt from 'jsonwebtoken';
 
+import { CreateError, logger } from '../utils';
 import { UserDoc } from '../types';
 import configLoader from '../utils/envLoader.utils';
-
-interface IVerifyTokens {
-  accessToken: string | undefined;
-  refreshToken: string | undefined;
-}
 
 class TokenService {
   /**
@@ -16,6 +12,10 @@ class TokenService {
   public static getTokens(req: Request) {
     const accessToken = this.getAccessToken(req);
     const refreshToken = this.getRefreshToken(req);
+
+    if (!accessToken || !refreshToken) {
+      throw CreateError.UnauthorizedError();
+    }
 
     return { accessToken, refreshToken };
   }
@@ -28,19 +28,25 @@ class TokenService {
     return req.headers.cookie?.split('=')[1];
   }
 
-  public static verifTokens(tokens: IVerifyTokens) {
-    const decodedAccessToken = this.verifyAccessToken(tokens.accessToken);
-    const decodedRefreshToken = this.verifyRefreshToken(tokens.refreshToken);
-
-    return { decodedAccessToken, decodedRefreshToken };
+  public static verifyAccessToken(accessToken: string) {
+    try {
+      return jwt.verify(accessToken, configLoader.jwtAccessSecret) as any;
+    } catch (error) {
+      if (error.name === 'TokenExpiredError') {
+        return error.name;
+      }
+      logger.error(error);
+      throw CreateError.UnauthorizedError();
+    }
   }
 
-  private static verifyAccessToken(accesstoken: string | undefined) {
-    return jwt.verify(`${accesstoken}`, configLoader.jwtAccessSecret) as any;
-  }
-
-  private static verifyRefreshToken(refreshtoken: string | undefined) {
-    return jwt.verify(`${refreshtoken}`, configLoader.jwtRefreshSecret) as any;
+  public static verifyRefreshToken(refreshToken: string) {
+    try {
+      return jwt.verify(refreshToken, configLoader.jwtRefreshSecret) as any;
+    } catch (error) {
+      logger.error(error);
+      throw CreateError.UnauthorizedError();
+    }
   }
 
   public static signTokens(user: UserDoc) {
@@ -51,10 +57,10 @@ class TokenService {
   }
 
   private static signAccessToken(user: UserDoc): string {
-    return `Bearer ${jwt.sign({ id: user.id }, configLoader.jwtAccessSecret, {
+    return jwt.sign({ id: user.id }, configLoader.jwtAccessSecret, {
       expiresIn: configLoader.jwtAccessExpiry,
       audience: user.email,
-    })}`;
+    });
   }
 
   private static signRefreshToken(user: UserDoc): string {

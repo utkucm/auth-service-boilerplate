@@ -24,6 +24,7 @@ const errorHandler = (err: Error, _: Request, res: Response, __: NextFunction) =
     });
   }
 
+  console.log(err);
   return res.status(500).json({
     success: false,
     payload: {

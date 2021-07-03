@@ -11,5 +11,6 @@ authRouter.route('/forgot-password').post(AuthMiddlewares.validateForgotPassword
 authRouter
   .route('/reset-password/:resetPasswordToken')
   .post(AuthMiddlewares.validateResetPassword, UserController.resetPassword);
+authRouter.route('/refresh-token').post(AuthMiddlewares.isAuthenticated, UserController.refreshToken);
 
 export default authRouter;

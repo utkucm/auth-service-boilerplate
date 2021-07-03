@@ -4,9 +4,9 @@ import { TokenService, UserService, ResponseService, PasswordService } from '../
 import { CreateError } from '../utils';
 
 class UserController {
-  public static async register(_: Request, res: Response, next: NextFunction) {
+  public static async register(req: Request, res: Response, next: NextFunction) {
     try {
-      const { username, email, password } = res.locals.data;
+      const { username, email, password } = req.body;
 
       const user = await UserService.create({ username, email, password });
 
@@ -66,11 +66,38 @@ class UserController {
       user.password = password;
       user.resetPasswordToken = null;
       user.resetPasswordTokenExpires = null;
+      user.passwordChangedAt = Date.now();
       await user.save();
 
       // await MailService.sendForgotPassword(resetPasswordURL, user);
 
       ResponseService.sendResetPassword(res);
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  public static async refreshToken(req: Request, res: Response, next: NextFunction) {
+    try {
+      const tokensFromClient = TokenService.getTokens(req);
+
+      const { decodedRefreshToken } = TokenService.verifyRefreshToken(tokensFromClient.refreshToken);
+
+      const user = await UserService.get({
+        _id: decodedRefreshToken.id,
+      });
+
+      if (!user) {
+        return next(CreateError.UnauthorizedError('You need to log in.'));
+      }
+
+      if (user.passwordChangedAt && user.passwordChangedAt > decodedRefreshToken.iat) {
+        return next(CreateError.UnauthorizedError('You need to log in.'));
+      }
+
+      const tokens = TokenService.signTokens(user);
+
+      ResponseService.sendLogin(res, tokens);
     } catch (err) {
       return next(err);
     }

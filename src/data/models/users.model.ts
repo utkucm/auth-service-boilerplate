@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema<IUser>(
       type: String,
       required: [true, 'Please provide a valid password.'],
     },
+    passwordChangedAt: {
+      type: Schema.Types.Mixed,
+      default: null,
+    },
     emailConfirmed: {
       type: Boolean,
       default: false,
