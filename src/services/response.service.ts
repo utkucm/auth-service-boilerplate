@@ -5,29 +5,42 @@ interface Tokens {
   refreshToken: string;
 }
 
+enum Messages {
+  Register = 'You are registered successfully.',
+  Login = 'You are logged in successfully.',
+  ForgotPassword = 'If we could find a user associated with provided email address. We will send an email to this email address to reset password.',
+  ResetPassword = 'You have successfully changed your password.',
+  RefreshToken = 'Refresh token has been sent to you.'
+}
+
 class ResponseService {
+  private static setTokens(res: Response, tokens: Tokens) {
+    res.cookie('accessToken', `Bearer ${tokens.accessToken}`)
+    res.cookie('refreshToken', tokens.refreshToken)
+  }
+
   public static sendRegister(res: Response, tokens: Tokens) {
+    this.setTokens(res, tokens)
+
     return res
       .status(201)
-      .cookie('jid', tokens.refreshToken)
-      .set('Authorization', `Bearer ${tokens.accessToken}`)
       .json({
         success: true,
         payload: {
-          message: 'You are registered successfully.',
+          message: Messages.Register,
         },
       });
   }
 
   public static sendLogin(res: Response, tokens: Tokens) {
+    this.setTokens(res, tokens)
+
     return res
       .status(200)
-      .cookie('jid', tokens.refreshToken)
-      .set('Authorization', `Bearer ${tokens.accessToken}`)
       .json({
         success: true,
         payload: {
-          message: 'You are logged in successfully.',
+          message: Messages.Login,
         },
       });
   }
@@ -37,7 +50,7 @@ class ResponseService {
       success: true,
       payload: {
         message:
-          'If we could find a user associated with provided email address. We will send an email to this email address to reset password.',
+          Messages.ForgotPassword,
         resetPasswordURL: resetPasswordURL || null,
       },
     });
@@ -47,19 +60,21 @@ class ResponseService {
     return res.status(200).json({
       success: true,
       payload: {
-        message: 'You have successfully changed your password.',
+        message: Messages.ResetPassword,
       },
     });
   }
 
   public static sendRefreshToken(res: Response, tokens: Tokens) {
+    this.setTokens(res, tokens)
+
     return res
       .status(200)
-      .cookie('jid', tokens.refreshToken)
-      .set('Authorization', `Bearer ${tokens.accessToken}`)
       .json({
         success: true,
-        payload: {},
+        payload: {
+          message: Messages.RefreshToken
+        },
       });
   }
 }

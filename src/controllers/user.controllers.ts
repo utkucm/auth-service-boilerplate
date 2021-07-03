@@ -79,20 +79,18 @@ class UserController {
 
   public static async refreshToken(req: Request, res: Response, next: NextFunction) {
     try {
-      const tokensFromClient = TokenService.getTokens(req);
+      const { refreshToken } = TokenService.getTokens(req);
 
-      const { decodedRefreshToken } = TokenService.verifyRefreshToken(tokensFromClient.refreshToken);
+      const decodedRefreshToken = TokenService.verifyRefreshToken(refreshToken);
 
-      const user = await UserService.get({
-        _id: decodedRefreshToken.id,
-      });
+      const user = await UserService.get({ _id: decodedRefreshToken.id })
 
       if (!user) {
         return next(CreateError.UnauthorizedError('You need to log in.'));
       }
 
-      if (user.passwordChangedAt && user.passwordChangedAt > decodedRefreshToken.iat) {
-        return next(CreateError.UnauthorizedError('You need to log in.'));
+      if (user.passwordChangedAt && (user.passwordChangedAt > decodedRefreshToken.issuedAt)) {
+        return next(CreateError.UnauthorizedError('You need to log in. 2'));
       }
 
       const tokens = TokenService.signTokens(user);

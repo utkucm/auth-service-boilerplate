@@ -21,21 +21,24 @@ class TokenService {
   }
 
   private static getAccessToken(req: Request) {
-    return req.headers.authorization?.split(' ')[1];
+    return req.cookies.accessToken?.split(' ')[1];
   }
 
   private static getRefreshToken(req: Request) {
-    return req.headers.cookie?.split('=')[1];
+    return req.cookies.refreshToken
   }
 
   public static verifyAccessToken(accessToken: string) {
     try {
-      return jwt.verify(accessToken, configLoader.jwtAccessSecret) as any;
+      return {
+        decodedAccessToken: jwt.verify(accessToken, configLoader.jwtAccessSecret) as any,
+        expired: false,
+      }
     } catch (error) {
       if (error.name === 'TokenExpiredError') {
-        return error.name;
+        return { decodedAccessToken: jwt.decode(accessToken), expired: true }
       }
-      logger.error(error);
+      logger.error( error);
       throw CreateError.UnauthorizedError();
     }
   }
@@ -57,14 +60,14 @@ class TokenService {
   }
 
   private static signAccessToken(user: UserDoc): string {
-    return jwt.sign({ id: user.id }, configLoader.jwtAccessSecret, {
+    return jwt.sign({ id: user.id, issuedAt: Date.now() }, configLoader.jwtAccessSecret, {
       expiresIn: configLoader.jwtAccessExpiry,
       audience: user.email,
     });
   }
 
   private static signRefreshToken(user: UserDoc): string {
-    return jwt.sign({ id: user.id }, configLoader.jwtRefreshSecret, {
+    return jwt.sign({ id: user.id, issuedAt: Date.now() }, configLoader.jwtRefreshSecret, {
       expiresIn: configLoader.jwtRefreshExpiry,
       audience: user.email,
     });

@@ -73,27 +73,28 @@ class AuthMiddlewares {
     }
   }
 
-  public static async isAuthenticated(req: Request, res: Response, next: NextFunction) {
+  public static async isAuthenticated(req: Request, _: Response, next: NextFunction) {
     try {
       const tokens = TokenService.getTokens(req);
 
-      const { decodedAccessToken } = TokenService.verifyAccessToken(tokens.accessToken);
+      const { decodedAccessToken, expired } = TokenService.verifyAccessToken(tokens.accessToken);
 
-      if (decodedAccessToken === 'TokenExpiredError') {
+      if (expired) {
         return next();
       }
 
       const user = await UserService.get({ _id: decodedAccessToken.id });
 
       if (!user) {
+        return next(CreateError.UnauthorizedError('You need to log in. 1'));
+      }
+
+      if (user.passwordChangedAt && (user.passwordChangedAt > decodedAccessToken.iat)) {
         return next(CreateError.UnauthorizedError('You need to log in.'));
       }
 
-      res.locals.user = user;
-
       next();
     } catch (err) {
-      logger.error(`Error occurred when validating reset password body. ERROR: ${err}`);
       next(err);
     }
   }
